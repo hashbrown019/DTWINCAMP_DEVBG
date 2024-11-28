@@ -22,8 +22,8 @@ def receive_payload():
 	f = open(f"{PATH}payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
-	reconstructPayload(PAYLOAD)
-	return {'msg':"done","data_sent":PAYLOAD}
+	dtpayload = reconstructPayload(PAYLOAD)
+	return {'msg':"done","data_sent":dtpayload}
 
 def get_aff_link_from_surecart(query):
 	url = f'https://api.surecart.com/v1/affiliations?query={query}'
