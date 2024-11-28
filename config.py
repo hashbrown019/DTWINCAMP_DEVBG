@@ -19,3 +19,13 @@ PROD_LVLDICT = {
     "win-biggest-annual-0" : "win-biggest-annual (win-biggest-annual-0)",
     "win-biggest-annual" : "win-biggest-annual-split (win-biggest-annual)"
 }
+PROD_LVL = [
+    "win-big-01",
+    "win-big-annual",
+    "win-bigger-0",
+    "win-bigger-annual",
+    "win-bigger-3-months-easy-plan",
+    "win-biggest",
+    "win-biggest-annual-0",
+    "win-biggest-annual"
+]

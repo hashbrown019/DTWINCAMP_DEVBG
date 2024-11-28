@@ -11,26 +11,33 @@ WCDTEND = "http://18.142.180.187/"
 PATH = c.PATH
 SURECART_TOKEN = c.SURECART_TOKEN
 PRODUCTS_NAME = c.PROD_LVLDICT
+PROD_LVL = c.PROD_LVL
 
 @app.route("/")
 def index():return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 
-@app.route("/api/payload",methods=["POST","GET","PUT"])
+
+@app.route("/api/payload/get")
+def get_payload():
+	return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
+
+@app.route("/api/payload/send",methods=["POST","GET","PUT"])
 def receive_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	f = open(f"{PATH}payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
 	dtpayload = reconstructPayload(PAYLOAD)
-	return {'msg':"done","data_sent":dtpayload}
+	return dtpayload
 
+# ================================================================================================
 def get_aff_link_from_surecart(query):
 	url = f'https://api.surecart.com/v1/affiliations?query={query}'
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	return json.loads(requests.get(url, headers=headers).text)["data"][0]
 
 def get_subs_from_surecart(query):
-	url = f'https://api.surecart.com/v1/subscriptions?customer_ids[]={query}'
+	url = f'https://api.surecart.com/v1/subscriptions?checkout_ids[]={query}'
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	return json.loads(requests.get(url, headers=headers).text)["data"][0]
 
@@ -50,7 +57,8 @@ def reconstructPayload(PAYLOAD):
 		"MyWinCampaignLink":myclink,
 		"UpLineAffiliateLink":upclink,
 		"statusMyWinCampaignLink": wc_is_active,
-		"wc-subscription_logs" : createSubLogs(PAYLOAD["product"])
+		# "wc-subscription_logs" : createSubLogs(PAYLOAD['checkout']['line_items']['data'])
+		"wc-subscription_logs" : createSubLogs(PAYLOAD["product"],PAYLOAD['checkout']['line_items']['data'])
 	}
 	FILENAME_PAAYLOAD = PAYLOAD["checkout"]["customer"]["affiliation"]
 	f = open(f"{PATH}payloads/{FILENAME_PAAYLOAD}","w")
@@ -58,19 +66,39 @@ def reconstructPayload(PAYLOAD):
 	f.close()
 	return details_byemail_name
 
-def createSubLogs(subs):
+def createSubLogs(subs,line_items):
 	subs_arr = []
 	for ind in range(len(subs['id'])):
+		SUBSLINE_ITEM = get_subs_from_surecart(line_items['checkout'][ind])
 		subs_arr.append({
 			"subscription_id": subs["id"][ind],
 			"product_name": PRODUCTS_NAME[subs["slug"][ind]],
-			# "subcription_lvl_compared_to_prev": subs["xxxxx"][ind],
-			# "subscription_status": subs["xxxxx"][ind],
-			# "if_cancel_date": subs["xxxxx"][ind],
-			# "current_period_end_at": subs["xxxxx"][ind],
-			"current_period_start_at": subs["created_at"][ind],
+			"subcription_lvl_compared_to_prev": lvlofsubscription(subs["slug"][ind],subs["slug"],ind,SUBSLINE_ITEM['status']),
+			"subscription_status": SUBSLINE_ITEM['status'],
+			"if_cancel_date": SUBSLINE_ITEM['ended_at'],
+			"current_period_end_at": SUBSLINE_ITEM['current_period_end_at'],
+			"current_period_start_at": SUBSLINE_ITEM['current_period_start_at'],
 		})
 	return subs_arr
+
+
+def lvlofsubscription(SUB_SHORT_NAME,subscription_logs,ind,status):
+	subcription_lvl_compared_to_prev = "initial"
+	if(status=="canceled"):
+		subcription_lvl_compared_to_prev = "canceled"
+	
+	elif(ind>0):
+		if(PROD_LVL.index(SUB_SHORT_NAME) > PROD_LVL.index(subscription_logs[ind-1]['product_name']) ):
+			subcription_lvl_compared_to_prev = "upgrade"
+		elif(PROD_LVL.index(SUB_SHORT_NAME) == PROD_LVL.index(subscription_logs[ind-1]['product_name']) ):
+			subcription_lvl_compared_to_prev = "unchanged"
+		else:
+			subcription_lvl_compared_to_prev = "downgrade"
+		
+	
+	return subcription_lvl_compared_to_prev
+
+
 
 def convertSureCartRawToNestedJSON(raw):
 	data_out = {}
