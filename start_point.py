@@ -49,7 +49,8 @@ def reconstructPayload(PAYLOAD):
 		# "DTMemberStatus": "",
 		"MyWinCampaignLink":myclink,
 		"UpLineAffiliateLink":upclink,
-		"statusMyWinCampaignLink": wc_is_active
+		"statusMyWinCampaignLink": wc_is_active,
+		"wc-subscription_logs" : []
 	}
 	FILENAME_PAAYLOAD = PAYLOAD["checkout"]["customer"]["affiliation"]
 	f = open(f"{PATH}payloads/{FILENAME_PAAYLOAD}","w")
