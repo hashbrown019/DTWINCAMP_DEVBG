@@ -13,7 +13,7 @@ def index():
 @app.route("/api/payload",methods=["POST","GET","PUT"])
 def receive_payload():
 	PAYLOAD = request.json
-	f = open("last_payload","w")
+	f = open("payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
 	print(PAYLOAD)
