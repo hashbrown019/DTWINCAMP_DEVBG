@@ -1,4 +1,5 @@
 from flask import Flask, request
+import json
 
 app = Flask(__name__)
 
@@ -12,6 +13,9 @@ def index():
 @app.route("/api/payload",methods=["POST","GET","PUT"])
 def receive_payload():
 	PAYLOAD = request.json
+	f = open("last_payload","w")
+	f.write(json.dumps(PAYLOAD))
+	f.close()
 	print(PAYLOAD)
 	return {'msg':"done","data_sent":PAYLOAD}
 
