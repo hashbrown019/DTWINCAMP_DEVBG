@@ -10,11 +10,10 @@ app = Flask(__name__)
 WCDTEND = "http://18.142.180.187/"
 PATH = c.PATH
 SURECART_TOKEN = c.SURECART_TOKEN
-
+PRODUCTS_NAME = c.PROD_LVLDICT
 
 @app.route("/")
-def index():
-	return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
+def index():return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 
 @app.route("/api/payload",methods=["POST","GET","PUT"])
 def receive_payload():
@@ -27,12 +26,13 @@ def receive_payload():
 
 def get_aff_link_from_surecart(query):
 	url = f'https://api.surecart.com/v1/affiliations?query={query}'
-	headers = {
-		'Authorization': SURECART_TOKEN,
-		'Content-Type': 'application/json'
-	}
-	response = requests.get(url, headers=headers)
-	return json.loads(response.text)["data"][0]
+	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
+	return json.loads(requests.get(url, headers=headers).text)["data"][0]
+
+def get_subs_from_surecart(query):
+	url = f'https://api.surecart.com/v1/subscriptions?customer_ids[]={query}'
+	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
+	return json.loads(requests.get(url, headers=headers).text)["data"][0]
 
 
 def reconstructPayload(PAYLOAD):
@@ -50,13 +50,27 @@ def reconstructPayload(PAYLOAD):
 		"MyWinCampaignLink":myclink,
 		"UpLineAffiliateLink":upclink,
 		"statusMyWinCampaignLink": wc_is_active,
-		"wc-subscription_logs" : []
+		"wc-subscription_logs" : createSubLogs(PAYLOAD["product"])
 	}
 	FILENAME_PAAYLOAD = PAYLOAD["checkout"]["customer"]["affiliation"]
 	f = open(f"{PATH}payloads/{FILENAME_PAAYLOAD}","w")
 	f.write(json.dumps(details_byemail_name))
 	f.close()
 	return details_byemail_name
+
+def createSubLogs(subs):
+	subs_arr = []
+	for ind in range(len(subs['id'])):
+		subs_arr.append({
+			"subscription_id": subs["id"][ind],
+			"product_name": PRODUCTS_NAME[subs["slug"][ind]],
+			# "subcription_lvl_compared_to_prev": subs["xxxxx"][ind],
+			# "subscription_status": subs["xxxxx"][ind],
+			# "if_cancel_date": subs["xxxxx"][ind],
+			# "current_period_end_at": subs["xxxxx"][ind],
+			"current_period_start_at": subs["created_at"][ind],
+		})
+	return subs_arr
 
 def convertSureCartRawToNestedJSON(raw):
 	data_out = {}
