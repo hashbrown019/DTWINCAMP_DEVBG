@@ -6,6 +6,6 @@ app = Flask(__name__)
 def index():
 	return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 
-@app.route("/received",methods=["POST","GET","PUT"])
-def index():
+@app.route("/api/payload",methods=["POST","GET","PUT"])
+def receive_payload():
 	return "Test"
