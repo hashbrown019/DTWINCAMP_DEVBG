@@ -134,3 +134,5 @@ def test_last_payload():
 	''')
 
 # cd /var/www/html/DTWINCAMP_DEVBG/ && sudo git pull && sudo service apache2 restart && sudo tail -f /var/log/apache2/error.log
+http_server = pywsgi.WSGIServer(('0.0.0.0', 443), app, keyfile='server.key', certfile='server.crt')
+http_server.serve_forever()
