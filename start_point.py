@@ -8,6 +8,7 @@ import requests
 app = Flask(__name__)
 
 WCDTEND = "http://18.142.180.187/"
+DTPAYLOAD_RECEIVER = 'https://wcreceivesubscriptionaffiliate.azurewebsites.net/api/SubscriptionAffiliateReceiver?code=yKrrRuXRtkTuIQDuZX7342x4dsG6w5b6ub4FHtlWFERgAzFuBWZUHg%3D%3D'
 PATH = c.PATH
 SURECART_TOKEN = c.SURECART_TOKEN
 PRODUCTS_NAME = c.PROD_LVLDICT
@@ -28,7 +29,9 @@ def receive_payload():
 	f.write(json.dumps(PAYLOAD))
 	f.close()
 	dtpayload = reconstructPayload(PAYLOAD)
-	return dtpayload
+	headers = {'Content-Type': 'application/json'}
+	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
+	return {"payload":dtpayload,"server_response":server_return}
 
 # ================================================================================================
 def get_aff_link_from_surecart(query):
