@@ -31,7 +31,7 @@ def receive_payload():
 	dtpayload = reconstructPayload(PAYLOAD)
 	headers = {'Content-Type': 'application/json'}
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
-	return_data = {"payload":dtpayload,"server_response":server_return}
+	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	print(return_data)
 	return return_data
 
