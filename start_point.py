@@ -47,7 +47,9 @@ def receive_payload():
 	headers = {'Content-Type': 'application/json'}
 	print("------Payload Data-----")
 	print(dtpayload)
-	return dtpayload
+	# return dtpayload
+
+	# ----------
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	print(return_data)
@@ -91,6 +93,7 @@ def reconstructPayload(PAYLOAD):
 
 def createSubLogs(subs,line_items):
 	subs_arr = []
+	print(subs)
 	for ind in range(len(subs['id'])):
 		SUBSLINE_ITEM = get_subs_from_surecart(line_items['checkout'][ind])
 		subs_arr.append({
