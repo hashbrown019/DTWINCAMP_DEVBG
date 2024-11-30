@@ -66,13 +66,13 @@ def preapare_send_payload():
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	response = requests.get(url, headers=headers)
 
-	customer = response.json
+	customer = response.text
 	# dtpayload = reconstructPayload(PAYLOAD)
 	# headers = {'Content-Type': 'application/json'}
 	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	# return_data = {"payload":dtpayload,"server_response":server_return.text}
 	# print(return_data)
-	return customer["data"][0]
+	return customer
 
 
 # ================================================================================================
