@@ -61,6 +61,7 @@ def receive_payload():
 
 @app.route("/api/payload/send_to_dt",methods=["POST","GET"])
 def preapare_send_payload():
+	print("-----------------------------------")
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cemail = PAYLOAD['email']
 	url = f"https://api.surecart.com/v1/customers?email={cemail}"
