@@ -43,12 +43,14 @@ def receive_payload():
 	f = open(f"{PATH}payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
-	dtpayload = reconstructPayload(PAYLOAD)
-	headers = {'Content-Type': 'application/json'}
-	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
-	return_data = {"payload":dtpayload,"server_response":server_return.text}
-	print(return_data)
-	return return_data
+	print(PAYLOAD['checkout']['customer']['name'])
+	print(PAYLOAD['checkout']['customer']['id'])
+	# dtpayload = reconstructPayload(PAYLOAD)
+	# headers = {'Content-Type': 'application/json'}
+	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
+	# return_data = {"payload":dtpayload,"server_response":server_return.text}
+	# print(return_data)
+	return request.json
 
 # ================================================================================================
 def get_aff_link_from_surecart(query):
