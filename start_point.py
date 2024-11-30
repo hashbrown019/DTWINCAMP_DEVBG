@@ -167,7 +167,9 @@ def createSubLogs(subs,line_items):
 	subs_arr = []
 	print("---------------CREATING LOGS--------------------")
 	print(subs)
+	print("------")
 	print(line_items)
+	print("------")
 	for ind in range(len(subs)):
 		SUBSLINE_ITEM = get_subs_from_surecart(line_items[ind]['checkout'])
 		subs_arr.append({
