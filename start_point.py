@@ -87,7 +87,7 @@ def preapare_send_payload():
 	print("-----------------------------------")
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cemail = PAYLOAD['email']
-	url = f"https://api.surecart.com/v1/customers?email={cemail}"
+	url = f"https://api.surecart.com/v1/customers?query={cemail}"
 	print(f" ** Getting Customer_details by SURECART API using : {cemail}")
 
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
@@ -123,6 +123,8 @@ def get_subs_from_surecart(query):
 	res = json.loads(requests.get(url, headers=headers).text)
 	print(" ====== Subs Available ========")
 	print(res)
+	# if("data" in res):
+	# 	res["data"] = []
 	return res["data"][0] #subs
 
 
