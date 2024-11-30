@@ -73,12 +73,41 @@ def receive_payload():
 	# return dtpayload
 
 	# ----------
-	
+
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	print(return_data)
 	return request.json
 
+
+# ================================================================================================
+# ================================================================================================
+@app.route("/api/payload/send_to_dt",methods=["POST","GET"])
+def preapare_send_payload():
+	print("-----------------------------------")
+	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
+	cemail = PAYLOAD['email']
+	url = f"https://api.surecart.com/v1/customers?email={cemail}"
+	print(f" ** Getting Customer_details by SURECART API using : {cemail}")
+
+	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
+	response = requests.get(url, headers=headers)
+
+	print(f" ** Rsponse From  : {cemail}")
+	customer = response.text
+	print(customer)
+	# dtpayload = reconstructPayload(PAYLOAD)
+	# headers = {'Content-Type': 'application/json'}
+	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
+	# return_data = {"payload":dtpayload,"server_response":server_return.text}
+	# print(return_data)
+	return customer
+
+# ================================================================================================
+# ================================================================================================
+# ================================================================================================
+# ================================================================================================
+# ================================================================================================
 # ================================================================================================
 def get_aff_link_from_surecart(query):
 	url = f'https://api.surecart.com/v1/affiliations?query={query}'
