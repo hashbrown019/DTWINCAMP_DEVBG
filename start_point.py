@@ -40,11 +40,11 @@ def test_payload():
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
-	f = open(f"{PATH}payloads/last_payload","w")
+	cid = PAYLOAD['checkout']['customer']['name']
+	cname = PAYLOAD['checkout']['customer']['id']
+	f = open(f"{PATH}payloads/{cid}","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
-	print(PAYLOAD['checkout']['customer']['name'])
-	print(PAYLOAD['checkout']['customer']['id'])
 	# dtpayload = reconstructPayload(PAYLOAD)
 	# headers = {'Content-Type': 'application/json'}
 	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
