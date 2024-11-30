@@ -18,69 +18,40 @@ PROD_LVL = c.PROD_LVL
 def index():return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 
 
-@app.route("/api/payload/test")
-def test_payload():
+@app.route("/api/payload/get")
+def get_payload():
 	return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 
-@app.route("/api/payload/get",methods=["POST","GET"])
-def get_payload():
-	headers = {'Content-Type': 'application/json'}
-	params = {
-		"expand[]": ["checkout", "checkout.customer"],
-	}
-	print(request.json)
-	customer = request.json
-	_link = f"https://api.surecart.com/v1/orders?query={customer['id']}"
-	print(_link)
-	server_return = requests.post(_link, headers=headers,params=params)
-	# return_data = {"payload":dtpayload,"server_response":server_return.text}
-	# return server_return.text
+@app.route("/api/payload/test",methods=["POST","GET"])
+def test_payload():
+	# headers = {'Content-Type': 'application/json'}
+	# params = {
+	# 	"expand[]": ["checkout", "checkout.customer"],
+	# }
+	# print(request.json)
+	# customer = request.json
+	# _link = f"https://api.surecart.com/v1/orders?query={customer['id']}"
+	# print(_link)
+	# server_return = requests.post(_link, headers=headers,params=params)
+	# # return_data = {"payload":dtpayload,"server_response":server_return.text}
+	# # return server_return.text
 	return request.json
 
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
-	print(" -- Setting Payload --")
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
-	cname = PAYLOAD['checkout']['customer']['name']
-	cid = PAYLOAD['checkout']['customer']['id']
-	cemail = PAYLOAD['checkout']['customer']['email']
-	cid = PAYLOAD['checkout']['customer']['id']
-	print(f" Payload email: {cemail}")
-	print(f" ** Saving Payload to dir [Payloads/] = {cname}")
-	f = open(f"{PATH}payloads/{cid}","w")
+	f = open(f"{PATH}payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
-	used_initial_url = urlparse(PAYLOAD["checkout"]["metadata"]["page_url"])
-	cus = PAYLOAD['checkout']['customer']
-	cus['dt_referral_link'] = used_initial_url
-
-	print(f" ** Saving Payload to dir [customers/] = {cname}")
-	f = open(f"{PATH}customers/{cid}","w")
-	f.write(json.dumps(cus))
-	f.close()
+	dtpayload = reconstructPayload(PAYLOAD)
+	headers = {'Content-Type': 'application/json'}
+	print("------Payload Data-----")
+	print(dtpayload)
+	return dtpayload
+	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
+	return_data = {"payload":dtpayload,"server_response":server_return.text}
+	print(return_data)
 	return request.json
-
-@app.route("/api/payload/send_to_dt",methods=["POST","GET"])
-def preapare_send_payload():
-	print("-----------------------------------")
-	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
-	cemail = PAYLOAD['email']
-	url = f"https://api.surecart.com/v1/customers?email={cemail}"
-	print(f" ** Getting Customer_details by SURECART API using : {cemail}")
-
-	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
-	response = requests.get(url, headers=headers)
-
-	print(f" ** Rsponse From  : {cemail}")
-	customer = response.text
-	print(customer)
-	# dtpayload = reconstructPayload(PAYLOAD)
-	# headers = {'Content-Type': 'application/json'}
-	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
-	# return_data = {"payload":dtpayload,"server_response":server_return.text}
-	# print(return_data)
-	return customer
-
 
 # ================================================================================================
 def get_aff_link_from_surecart(query):
