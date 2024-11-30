@@ -32,7 +32,7 @@ def test_payload():
 	customer = request.json
 	server_return = requests.post(f"https://api.surecart.com/v1/orders/{customer['id']}", headers=headers,params=params)
 	# return_data = {"payload":dtpayload,"server_response":server_return.text}
-	return server_return
+	return server_return.text
 
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
