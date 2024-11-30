@@ -54,6 +54,7 @@ def receive_payload():
 	f.write(json.dumps(cus))
 	f.close()
 
+
 	# dtpayload = reconstructPayload(PAYLOAD)
 	# headers = {'Content-Type': 'application/json'}
 	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
