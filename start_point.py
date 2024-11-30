@@ -22,6 +22,10 @@ def index():return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 def get_payload():
 	return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
 
+@app.route("/api/payload/test",methods=["POST","GET"])
+def test_payload():
+	return request.json
+
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
