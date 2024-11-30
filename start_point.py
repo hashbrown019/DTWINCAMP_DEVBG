@@ -59,9 +59,9 @@ def receive_payload():
 @app.route("/api/payload/send_to_dt",methods=["POST","GET"])
 def preapare_send_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
-	cname = PAYLOAD['checkout']['customer']['email']
-	print(" ** Getting Customer_details by SURECART API using : {cname}")
-	url = "https://api.surecart.com/v1/customers?email={cname}"
+	cemail = PAYLOAD['email']
+	print(" ** Getting Customer_details by SURECART API using : {cemail}")
+	url = "https://api.surecart.com/v1/customers?email={cemail}"
 
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	response = requests.get(url, headers=headers)
