@@ -115,7 +115,7 @@ def get_aff_link_from_surecart(query):
 	res = json.loads(requests.get(url, headers=headers).text)
 	print(" ====== Aff if any ========")
 	print(res)
-	return res["data"][0]
+	return res["data"][0] #aff
 
 def get_subs_from_surecart(query):
 	url = f'https://api.surecart.com/v1/subscriptions?checkout_ids[]={query}'
@@ -123,7 +123,7 @@ def get_subs_from_surecart(query):
 	res = json.loads(requests.get(url, headers=headers).text)
 	print(" ====== Subs Available ========")
 	print(res)
-	return res["data"][0]
+	return res["data"][0] #subs
 
 
 def reconstructPayload(PAYLOAD):
