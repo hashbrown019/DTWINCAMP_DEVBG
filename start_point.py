@@ -29,7 +29,8 @@ def test_payload():
 		"expand[]": ["checkout", "checkout.customer"],
 	}
 	print(request.json)
-	server_return = requests.post(f"https://api.surecart.com/v1/orders/{request.json.id}", headers=headers,params=params)
+	customer = request.json
+	server_return = requests.post(f"https://api.surecart.com/v1/orders/{customer}", headers=headers,params=params)
 	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	return request.json
 
