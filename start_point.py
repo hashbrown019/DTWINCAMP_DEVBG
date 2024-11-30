@@ -39,6 +39,29 @@ def test_payload():
 
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
+	print(" -- Setting Payload for Saving--")
+	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
+	cname = PAYLOAD['checkout']['customer']['name']
+	cid = PAYLOAD['checkout']['customer']['id']
+	cemail = PAYLOAD['checkout']['customer']['email']
+	cid = PAYLOAD['checkout']['customer']['id']
+	print(f" Payload email: {cemail}")
+	print(f" ** Saving Payload to dir [Payloads/] = {cemail}")
+	f = open(f"{PATH}payloads/{cid}","w")
+	f.write(json.dumps(PAYLOAD))
+	f.close()
+	used_initial_url = urlparse(PAYLOAD["checkout"]["metadata"]["page_url"])
+	cus = PAYLOAD['checkout']['customer']
+	cus['dt_referral_link'] = used_initial_url
+
+	print(f" ** Saving Payload to dir [customers/] = {cemail}")
+	f = open(f"{PATH}customers/{cid}","w")
+	f.write(json.dumps(cus))
+	f.close()
+
+	# ---------------------------------------
+
+	# ---------------------------------------
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	f = open(f"{PATH}payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
