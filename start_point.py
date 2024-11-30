@@ -60,7 +60,7 @@ def receive_payload():
 def preapare_send_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cname = PAYLOAD['checkout']['customer']['email']
-
+	print(" ** Getting Customer_details by SURECART API using : {cname}")
 	url = "https://api.surecart.com/v1/customers?email={cname}"
 
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
