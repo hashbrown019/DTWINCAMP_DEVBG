@@ -68,7 +68,7 @@ def get_subs_from_surecart(query):
 def reconstructPayload(PAYLOAD):
 	used_initial_url = urlparse(PAYLOAD["checkout"]["metadata"]["page_url"])
 	url_args = parse_qs(used_initial_url.query)
-	myclink = f'{get_aff_link_from_surecart(PAYLOAD["checkout"]["customer"]["name"])["referral_url"]}'
+	myclink = f'{get_aff_link_from_surecart(PAYLOAD["checkout"]["customer"]["email"])["referral_url"]}'
 	upclink = f'{get_aff_link_from_surecart(PAYLOAD["checkout"]["customer"]["affiliation"])["referral_url"]}'
 	wc_is_active = "active" if f'{get_aff_link_from_surecart(PAYLOAD["checkout"]["customer"]["affiliation"])["active"]}'.lower() == "true" else "inactive"
 	print(wc_is_active)
