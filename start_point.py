@@ -24,17 +24,18 @@ def get_payload():
 
 @app.route("/api/payload/test",methods=["POST","GET"])
 def test_payload():
-	headers = {'Content-Type': 'application/json'}
-	params = {
-		"expand[]": ["checkout", "checkout.customer"],
-	}
-	print(request.json)
-	customer = request.json
-	_link = f"https://api.surecart.com/v1/orders?query={customer['id']}"
-	print(_link)
-	server_return = requests.post(_link, headers=headers,params=params)
-	# return_data = {"payload":dtpayload,"server_response":server_return.text}
-	return server_return.text
+	# headers = {'Content-Type': 'application/json'}
+	# params = {
+	# 	"expand[]": ["checkout", "checkout.customer"],
+	# }
+	# print(request.json)
+	# customer = request.json
+	# _link = f"https://api.surecart.com/v1/orders?query={customer['id']}"
+	# print(_link)
+	# server_return = requests.post(_link, headers=headers,params=params)
+	# # return_data = {"payload":dtpayload,"server_response":server_return.text}
+	# # return server_return.text
+	return request.json
 
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
