@@ -121,9 +121,9 @@ def createSubLogs(subs,line_items):
 	for ind in range(len(subs['id'])):
 		SUBSLINE_ITEM = get_subs_from_surecart(line_items['checkout'][ind])
 		subs_arr.append({
-			"subscription_id": subs["id"][ind],
-			"product_name": PRODUCTS_NAME[subs["slug"][ind]],
-			"subcription_lvl_compared_to_prev": lvlofsubscription(subs["slug"][ind],subs["slug"],ind,SUBSLINE_ITEM['status']),
+			"subscription_id": subs[ind]["id"],
+			"product_name": PRODUCTS_NAME[subs[ind]["slug"]],
+			"subcription_lvl_compared_to_prev": lvlofsubscription(subs[ind]["slug"],subs[ind]["slug"],ind,SUBSLINE_ITEM['status']),
 			"subscription_status": SUBSLINE_ITEM['status'],
 			"if_cancel_date": SUBSLINE_ITEM['ended_at'],
 			"current_period_end_at": SUBSLINE_ITEM['current_period_end_at'],
