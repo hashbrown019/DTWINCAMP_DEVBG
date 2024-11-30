@@ -42,7 +42,10 @@ def receive_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cname = PAYLOAD['checkout']['customer']['name']
 	cid = PAYLOAD['checkout']['customer']['id']
-	print(" ** Saving Payload to dir [Payloads/] = {cname}")
+	cemail = PAYLOAD['checkout']['customer']['email']
+	cid = PAYLOAD['checkout']['customer']['id']
+	print(f" Payload email: {}")
+	print(f" ** Saving Payload to dir [Payloads/] = {cname}")
 	f = open(f"{PATH}payloads/{cid}","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
@@ -50,7 +53,7 @@ def receive_payload():
 	cus = PAYLOAD['checkout']['customer']
 	cus['dt_referral_link'] = used_initial_url
 
-	print(" ** Saving Payload to dir [customers/] = {cname}")
+	print(f" ** Saving Payload to dir [customers/] = {cname}")
 	f = open(f"{PATH}customers/{cid}","w")
 	f.write(json.dumps(cus))
 	f.close()
@@ -60,13 +63,15 @@ def receive_payload():
 def preapare_send_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cemail = PAYLOAD['email']
-	print(f" ** Getting Customer_details by SURECART API using : {cemail}")
 	url = f"https://api.surecart.com/v1/customers?email={cemail}"
+	print(f" ** Getting Customer_details by SURECART API using : {cemail}")
 
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	response = requests.get(url, headers=headers)
 
+	print(f" ** Rsponse From  : {cemail}")
 	customer = response.text
+	print(customer)
 	# dtpayload = reconstructPayload(PAYLOAD)
 	# headers = {'Content-Type': 'application/json'}
 	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
