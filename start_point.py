@@ -72,7 +72,7 @@ def preapare_send_payload():
 	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	# return_data = {"payload":dtpayload,"server_response":server_return.text}
 	# print(return_data)
-	return customer["data"][0]
+	return customer
 
 
 # ================================================================================================
