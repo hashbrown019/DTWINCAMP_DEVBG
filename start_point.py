@@ -42,25 +42,38 @@ def receive_payload():
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cname = PAYLOAD['checkout']['customer']['name']
 	cid = PAYLOAD['checkout']['customer']['id']
+	print(" ** Saving Payload to dir [Payloads/] = {cname}")
 	f = open(f"{PATH}payloads/{cid}","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
-
 	used_initial_url = urlparse(PAYLOAD["checkout"]["metadata"]["page_url"])
 	cus = PAYLOAD['checkout']['customer']
 	cus['dt_referral_link'] = used_initial_url
 
+	print(" ** Saving Payload to dir [customers/] = {cname}")
 	f = open(f"{PATH}customers/{cid}","w")
 	f.write(json.dumps(cus))
 	f.close()
+	return request.json
 
+@app.route("/api/payload/send_to_dt",methods=["POST","GET"])
+def preapare_send_payload():
+	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
+	cname = PAYLOAD['checkout']['customer']['email']
 
+	url = "https://api.surecart.com/v1/customers?email={cname}"
+
+	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
+	response = requests.get(url, headers=headers)
+
+	customer = json.dumps(response.text)
 	# dtpayload = reconstructPayload(PAYLOAD)
 	# headers = {'Content-Type': 'application/json'}
 	# server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	# return_data = {"payload":dtpayload,"server_response":server_return.text}
 	# print(return_data)
-	return request.json
+	return customer["data"][0]
+
 
 # ================================================================================================
 def get_aff_link_from_surecart(query):
