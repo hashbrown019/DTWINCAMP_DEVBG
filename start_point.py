@@ -39,7 +39,7 @@ def test_payload():
 
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
-	print(" -- Setting Payload for Saving--")
+	print(" -- Setting Payload LOG for Saving--")
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
 	cname = PAYLOAD['checkout']['customer']['name']
 	cid = PAYLOAD['checkout']['customer']['id']
@@ -59,11 +59,13 @@ def receive_payload():
 	f.write(json.dumps(cus))
 	f.close()
 
+	print(" -- DONE Setting Payload LOG for Saving--")
 	# ---------------------------------------
 
 	# ---------------------------------------
 
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
+
 	f = open(f"{PATH}payloads/last_payload","w")
 	f.write(json.dumps(PAYLOAD))
 	f.close()
@@ -74,10 +76,12 @@ def receive_payload():
 	# return dtpayload
 
 	# ----------
-
+	print(" -- SENDING PAYLOAD TO DT  --")
+	return {"status":"CODE PAUSE"} # CODE BREAKER
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	print(return_data)
+	print(" -- DONE SENDING PAYLOAD TO DT  --")
 	return request.json
 
 
@@ -130,8 +134,8 @@ def get_subs_from_surecart(query):
 	res = json.loads(requests.get(url, headers=headers).text)
 	print(" ====== Subs Available ========")
 	print(res)
-	# if("data" in res):
-	# 	res["data"] = []
+	if("data" in res):
+		res["data"] = []
 	return res["data"][0] #subs
 
 
