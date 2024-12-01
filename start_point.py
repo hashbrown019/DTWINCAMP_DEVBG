@@ -94,8 +94,8 @@ def preapare_send_payload():
 	cemail = PAYLOAD['email']
 	print(cemail)
 	print("++++++++++++++")
-
-	for file in os.listdir(f"{PATH}payloads/"):
+	directory  f"{PATH}payloads/"
+	for file in os.listdir(directory):
 		filename = os.fsdecode(file)
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
