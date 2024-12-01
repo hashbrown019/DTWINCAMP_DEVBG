@@ -97,9 +97,8 @@ def preapare_send_payload():
 
 	for file in os.listdir(f"{PATH}payloads/"):
 		filename = os.fsdecode(file)
-		if filename.endswith(".asm") or filename.endswith(".py"): 
-			print(os.path.join(directory, filename))
-			continue
+		# if filename.endswith(".asm") or filename.endswith(".py"): continue
+		print(os.path.join(directory, filename))
 		else:
 			continue
 	# url = f"https://api.surecart.com/v1/customers?query={cemail}"
