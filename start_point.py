@@ -112,6 +112,7 @@ def preapare_send_payload():
 			if(cemail==customer_email):
 				send_payload_toDT(raw_payload)
 				break
+				
 			else:
 				pass
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
