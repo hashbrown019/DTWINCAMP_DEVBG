@@ -74,10 +74,12 @@ def receive_payload():
 	print("------Payload Data-----")
 	print(dtpayload)
 	# return dtpayload
-
+	send_payload_toDT(PAYLOAD)
 	# ----------
+
+def send_payload_toDT(PAYLOAD)
 	print(" -- SENDING PAYLOAD TO DT  --")
-	return {"status":"CODE PAUSE"} # CODE BREAKER
+	# return {"status":"CODE PAUSE"} # CODE BREAKER
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	print(return_data)
@@ -100,12 +102,18 @@ def preapare_send_payload():
 		path_file = os.path.join(directory, filename)
 		if(filename == "last_payload"):pass
 		else:
-			print(filename)
 			f = open(f"{PATH}payloads/{filename}","r")
 			content = f.read()
 			f.close()
 			raw_payload = json.loads(content)
-			print(raw_payload['checkout']['customer']['email'])
+			customer_email = raw_payload['checkout']['customer']['email']
+			print(f"{filename}  || {customer_email}")
+
+			if(cemail==customer_email):
+				send_payload_toDT(raw_payload)
+				break
+			else:
+				pass
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
 		# print(os.path.join(directory, filename))
