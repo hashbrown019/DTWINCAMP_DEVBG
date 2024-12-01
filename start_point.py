@@ -107,13 +107,13 @@ def preapare_send_payload():
 			f.close()
 			raw_payload = json.loads(content)
 			customer_email = raw_payload['checkout']['customer']['email']
-			print(f"{filename}  || {customer_email}")
 
 			if(cemail==customer_email):
+				print(f" -- Sending {filename}  || {customer_email} ::: {cemail}=={customer_email}")
 				send_payload_toDT(raw_payload)
 				break
-				
 			else:
+				print(f" -- Ignoring {filename}  || {customer_email}")
 				pass
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
