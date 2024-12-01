@@ -77,7 +77,7 @@ def receive_payload():
 	send_payload_toDT(PAYLOAD)
 	# ----------
 
-def send_payload_toDT(PAYLOAD)
+def send_payload_toDT(PAYLOAD):
 	print(" -- SENDING PAYLOAD TO DT  --")
 	# return {"status":"CODE PAUSE"} # CODE BREAKER
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
