@@ -124,7 +124,7 @@ def get_aff_link_from_surecart(query):
 	url = f'https://api.surecart.com/v1/affiliations?query={query}'
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	res = json.loads(requests.get(url, headers=headers).text)
-	print(" ====== Aff if any ========")
+	print(" ====== Aff if any ========{}".format(query))
 	print(res)
 	return res["data"][0] #aff
 
@@ -132,7 +132,7 @@ def get_subs_from_surecart(query):
 	url = f'https://api.surecart.com/v1/subscriptions?checkout_ids[]={query}'
 	headers = {'Authorization': SURECART_TOKEN,'Content-Type': 'application/json'}
 	res = json.loads(requests.get(url, headers=headers).text)
-	print(" ====== Subs Available ========")
+	print(" ====== Subs Available ========{}".format(query))
 	print(res)
 	if("data" in res):
 		res["data"] = []
