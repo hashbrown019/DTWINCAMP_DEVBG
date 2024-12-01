@@ -101,7 +101,7 @@ def preapare_send_payload():
 		if(filename == "last_payload"):pass
 		else:
 			print(filename)
-			f = open(f"{PATH}payloads/{payloads}","r")
+			f = open(f"{PATH}payloads/{filename}","r")
 			content = f.read()
 			f.close()
 			raw_payload = json.loads(content)
