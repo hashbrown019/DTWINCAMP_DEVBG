@@ -45,7 +45,7 @@ def receive_payload():
 	cid = PAYLOAD['checkout']['customer']['id']
 	cemail = PAYLOAD['checkout']['customer']['email']
 	cid = PAYLOAD['checkout']['customer']['id']
-	print(f" Payload email: {cemail}")
+	print(f" --- Creating Payload log email: {cemail}")
 	print(f" ** Saving Payload to dir [Payloads/] = {cemail}")
 	f = open(f"{PATH}payloads/{cid}","w")
 	f.write(json.dumps(PAYLOAD))
@@ -54,6 +54,7 @@ def receive_payload():
 	cus = PAYLOAD['checkout']['customer']
 	cus['dt_referral_link'] = used_initial_url
 
+	print(f" --- Creating Customer Payload log email: {cemail}")
 	print(f" ** Saving Payload to dir [customers/] = {cemail}")
 	f = open(f"{PATH}customers/{cid}","w")
 	f.write(json.dumps(cus))
@@ -74,17 +75,20 @@ def receive_payload():
 	print("------Payload Data-----")
 	print(dtpayload)
 	# return dtpayload
-	send_payload_toDT(PAYLOAD)
+	send_payload_toDT(PAYLOAD,cemail)
 	# ----------
 
-def send_payload_toDT(PAYLOAD):
+def send_payload_toDT(PAYLOAD,cemail):
 	print(" -- SENDING PAYLOAD TO DT  --")
 	# return {"status":"CODE PAUSE"} # CODE BREAKER
 	server_return = requests.post(DTPAYLOAD_RECEIVER, headers=headers, json=dtpayload)
 	return_data = {"payload":dtpayload,"server_response":server_return.text}
 	print(return_data)
 	print(" -- DONE SENDING PAYLOAD TO DT  --")
-	return request.json
+	f = open(f"{PATH}sent_payload/{cemail}","w")
+	f.write(json.dumps(PAYLOAD))
+	f.close()
+	return return_data
 
 
 # ================================================================================================
@@ -110,7 +114,7 @@ def preapare_send_payload():
 
 			if(cemail==customer_email):
 				print(f" -- Sending {filename}  || {customer_email} ::: {cemail}=={customer_email}")
-				send_payload_toDT(raw_payload)
+				send_payload_toDT(raw_payload,cemail)
 				break
 			else:
 				print(f" -- Ignoring {filename}  || {customer_email} ::: {cemail}=={customer_email}")
