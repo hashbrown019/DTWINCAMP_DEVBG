@@ -99,9 +99,9 @@ def preapare_send_payload():
 		filename = os.fsdecode(file)
 		path_file = os.path.join(directory, filename)
 		if(filename == "last_payload"):pass
-		else{
+		else:
 			print(filename)
-		}
+		
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
 		# print(os.path.join(directory, filename))
