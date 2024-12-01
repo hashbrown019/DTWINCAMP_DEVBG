@@ -113,7 +113,7 @@ def preapare_send_payload():
 				send_payload_toDT(raw_payload)
 				break
 			else:
-				print(f" -- Ignoring {filename}  || {customer_email}")
+				print(f" -- Ignoring {filename}  || {customer_email} ::: {cemail}=={customer_email}")
 				pass
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
