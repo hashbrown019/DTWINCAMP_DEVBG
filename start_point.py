@@ -61,6 +61,7 @@ def receive_payload():
 	f.close()
 
 	print(" -- DONE Setting Payload LOG for Saving--")
+
 	# ---------------------------------------
 
 	# ---------------------------------------
@@ -95,8 +96,9 @@ def send_payload_toDT(PAYLOAD,cemail):
 # ================================================================================================
 @app.route("/api/payload/send_to_dt",methods=["POST","GET"])
 def preapare_send_payload():
-	print("-----------------------------------")
+	print("--------------Sending Via SureCart AFF form--------------")
 	PAYLOAD = convertSureCartRawToNestedJSON(request.json)
+	print(request.json)
 	cemail = PAYLOAD['email']
 	print(cemail)
 	print("++++++++++++++")
