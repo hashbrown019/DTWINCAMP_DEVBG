@@ -115,11 +115,11 @@ def preapare_send_payload():
 			customer_email = raw_payload['checkout']['customer']['email']
 
 			if(cemail==customer_email):
-				print(f" -- Sending {filename}  || {customer_email} ::: {cemail}=={customer_email}")
+				print(f" -- Sending {filename}  || {customer_email} ::: {cemail}=={customer_email} ########################################")
 				send_payload_toDT(raw_payload,cemail)
 				break
 			else:
-				print(f" -- Ignoring {filename}  || {customer_email} ::: {cemail}=={customer_email}")
+				print(f" -- Ignoring {filename}  || {customer_email} ::: {cemail}=={customer_email} ########################################")
 				pass
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
