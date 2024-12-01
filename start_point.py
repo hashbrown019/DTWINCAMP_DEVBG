@@ -101,7 +101,11 @@ def preapare_send_payload():
 		if(filename == "last_payload"):pass
 		else:
 			print(filename)
-		
+			f = open(f"{PATH}payloads/{payloads}","r")
+			content = f.read()
+			f.close()
+			raw_payload = json.loads(content)
+			print(raw_payload['checkout']['customer']['email'])
 		# if filename.endswith(".asm") or filename.endswith(".py"): continue
 		# else:continue
 		# print(os.path.join(directory, filename))
