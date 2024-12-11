@@ -15,7 +15,7 @@ PRODUCTS_NAME = c.PROD_LVLDICT
 PROD_LVL = c.PROD_LVL
 
 @app.route("/")
-def index():return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
+def index():return {'msg':"DT_WINCAMPAIGN BUSINESS LAYER RUNNING"}
 
 
 @app.route("/api/payload/get")
