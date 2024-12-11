@@ -91,7 +91,12 @@ def send_payload_toDT(PAYLOAD,cemail):
 	f.close()
 	return return_data
 
+# =======================================================================
+@app.route("/api/payload/reg",methods=["POST","GET"])
+def reg_1st_payload():
+	print(request.json)
 
+	return request.json
 # ================================================================================================
 # ================================================================================================
 @app.route("/api/payload/send_to_dt",methods=["POST","GET"])
