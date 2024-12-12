@@ -20,7 +20,7 @@ def index():return {'msg':"DT_WINCAMPAIGN BUSINESS LAYER RUNNING"}
 
 @app.route("/api/payload/get")
 def get_payload():
-	return "DT_WINCAMPAIGN BUSINESS LAYER RUNNING"
+	return ["DT_WINCAMPAIGN BUSINESS LAYER RUNNING"]
 
 @app.route("/api/payload/test",methods=["POST","GET"])
 def test_payload():
