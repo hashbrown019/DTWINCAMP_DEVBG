@@ -35,7 +35,7 @@ def test_payload():
 	# server_return = requests.post(_link, headers=headers,params=params)
 	# # return_data = {"payload":dtpayload,"server_response":server_return.text}
 	# # return server_return.text
-	return request.json
+	return {"sent_data":request.json}
 
 @app.route("/api/payload/send",methods=["POST","GET"])
 def receive_payload():
